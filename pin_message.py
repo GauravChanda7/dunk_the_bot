@@ -1,7 +1,10 @@
+import os
+from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import ContextTypes
 from exceptions import PinError, UnpinError, BotMessageDeleteError
 
+load_dotenv()
 
 async def pin_message(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
@@ -59,14 +62,11 @@ async def schedule_pin_command(update: Update, context: ContextTypes.DEFAULT_TYP
 
     time_seconds = 24*60*60
     text_to_pin = " ".join(context.args)
+    mentions = os.getenv("MENTION_LIST")
 
     sent_message = await context.bot.send_message(
         chat_id=chat_id,
-        text = (
-            f"📌 @ArunanshBarai @GauravChanda Bhubon @priyank_truestar "
-            f"Kamroop @Keima_Katsuragi @meowwitty @Chitin1627\n"
-            f"{text_to_pin}"
-        )
+        text = (f"{mentions} \n{text_to_pin}")
     )
 
     context.job_queue.run_once(
